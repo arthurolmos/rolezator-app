@@ -4,6 +4,11 @@ import styled, { keyframes } from "styled-components";
 function SideMenu({ handleQuestion }) {
   const [open, setOpen] = React.useState(false);
 
+  function handleOption(value) {
+    handleQuestion(value);
+    setOpen(false);
+  }
+
   return (
     <>
       <Container open={open}>
@@ -15,44 +20,50 @@ function SideMenu({ handleQuestion }) {
 
           <MenuContainer>
             <MenuOptions>
-              <Option onClick={() => handleQuestion("O que vou comer hoje?")}>
+              <Option onClick={() => handleOption("O que vou comer hoje?")}>
                 O que vou comer hoje?
               </Option>
-              <Option
-                onClick={() => handleQuestion("Para onde vou sair hoje?")}
-              >
+              <Option onClick={() => handleOption("Para onde vou sair hoje?")}>
                 Para onde vou sair hoje?
               </Option>
               <Option
-                onClick={() => handleQuestion("Qualquer coisa, tanto faz...")}
+                onClick={() => handleOption("Qualquer coisa, tanto faz...")}
               >
                 Qualquer coisa, tanto faz...
               </Option>
             </MenuOptions>
           </MenuContainer>
         </ContentContainer>
-        <OpenBar onClick={() => setOpen(!open)}>MENU</OpenBar>
+        <OpenBar onClick={() => setOpen(true)}>MENU</OpenBar>
       </Container>
+      {/* {open && <Backdrop onClick={() => setOpen(false)} />} */}
     </>
   );
 }
 
 export default SideMenu;
 
+const Backdrop = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background: black;
+  opacity: 0.2;
+`;
+
 const Container = styled.div`
   width: ${({ open }) => (open ? "350px" : "0")};
   height: 100vh;
-
   position: fixed;
   top: 0;
   left: 0;
-
   transition: width 0.3s linear;
   z-index: 999;
-
   display: flex;
   box-sizing: border-box;
-
   @media (max-width: 600px) {
     width: ${({ open }) => (open ? "250px" : "0")};
   }
@@ -65,7 +76,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   overflow-x: hidden;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.6);
 
   position: relative;
 `;

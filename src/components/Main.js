@@ -34,6 +34,7 @@ function Main() {
 
   return (
     <Container>
+      <ContainerTexture />
       <SideMenu handleQuestion={handleQuestion} />
       <CrystallBallContainer>
         <Overlayer
@@ -85,6 +86,38 @@ const Container = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
+  overflow: hidden;
+`;
+
+const slide = keyframes`
+  0% { width: 0 }
+  50% { width: 100%; }
+  100% { width: 0; }
+`;
+
+const ContainerTexture = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.5;
+
+  width: 200px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(9, 62, 121, 0) 100%
+  );
+  z-index: 8;
+  animation: ${slide} 10s linear infinite;
+
+  @media (max-width: 600px) {
+    width: 300px;
+    opacity: 1;
+  }
+
+  z-index: 1;
 `;
 
 const Overlayer = styled.div`
@@ -131,6 +164,7 @@ const CrystallBallAura = styled.div`
     active ? "0 0 10px 10px purple;" : "0 0 10px 10px white;"}
   opacity: ${({ active }) => (active ? 1 : 0)};
   transition: all 0.8s ease, width 1ms;
+  z-index: 6;
 
   ${CrystallBallContainer}:hover & {
     opacity: 1;
@@ -219,6 +253,7 @@ const TextContainer = styled.div`
   text-align: center;
   box-sizing: border-box;
   margin-bottom: 30px;
+  z-index: 4;
 `;
 
 const Text = styled.div`
@@ -232,7 +267,6 @@ const Text = styled.div`
   font-size: 28px;
   visibility: ${({ active }) => (active ? "visible" : "hidden")};
   opacity: ${({ active }) => (active ? 1 : 0)};
-  transition: all 0.5s ease;
 
   &:hover {
     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6,
