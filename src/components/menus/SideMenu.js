@@ -1,8 +1,13 @@
 import React from "react";
+import UserMenu from "./UserMenu";
+import { AuthContext } from "../../contexts/AuthContext";
 import styled, { keyframes } from "styled-components";
 
-function SideMenu({ handleQuestion }) {
+export default function SideMenu({ handleQuestion }) {
+  const { user, signIn } = React.useContext(AuthContext);
+
   const [open, setOpen] = React.useState(false);
+  const toggleOpen = () => setOpen(!open);
 
   function handleOption(value) {
     handleQuestion(value);
@@ -33,25 +38,38 @@ function SideMenu({ handleQuestion }) {
               </Option>
             </MenuOptions>
           </MenuContainer>
+
+          {user ? <UserMenu /> : <GoogleButton onClick={() => signIn()} />}
         </ContentContainer>
-        <OpenBar onClick={() => setOpen(true)}>MENU</OpenBar>
+        <OpenBar onClick={toggleOpen}>MENU</OpenBar>
       </Container>
-      {/* {open && <Backdrop onClick={() => setOpen(false)} />} */}
     </>
   );
 }
 
-export default SideMenu;
+const GoogleButton = styled.div`
+  width: 200px;
+  height: 40px;
+  background: url("/assets/btn_google_signin_dark_normal_web@2x.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-const Backdrop = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 99;
-  background: black;
-  opacity: 0.2;
+  cursor: pointer;
+
+  &:hover {
+    background: url("/assets/btn_google_signin_dark_focus_web@2x.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &:active {
+    background: url("/assets/btn_google_signin_dark_pressed_web@2x.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 `;
 
 const Container = styled.div`
@@ -76,7 +94,9 @@ const ContentContainer = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   overflow-x: hidden;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  // justify-content: center;
 
   position: relative;
 `;
@@ -139,15 +159,19 @@ const Description = styled.div`
   }
 `;
 
-const MenuOptions = styled.ul`
-  list-style: none;
+const MenuOptions = styled.div`
   color: white;
+  font-size: 20px;
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
 `;
 
-const Option = styled.li`
+const Option = styled.div`
   white-space: nowrap;
   transition: transform 0.5s ease;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   cursor: pointer;
 
   &:hover {
@@ -157,5 +181,9 @@ const Option = styled.li`
 
 const MenuContainer = styled.div`
   margin: 10px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 `;
