@@ -33,10 +33,6 @@ export default function LocationSearchInput({
     }
   };
 
-  React.useEffect(() => {
-    return () => setAddress("");
-  }, []);
-
   return (
     <PlacesAutocomplete
       value={address}

@@ -50,8 +50,13 @@ export default function BlacklistModal({
     }
   }
 
+  const handleCloseModal = () => {
+    setAddress("");
+    closeModal();
+  };
+
   return (
-    <DefaultModal open={open} closeModal={closeModal} title="Sugestões">
+    <DefaultModal open={open} closeModal={handleCloseModal} title="Sugestões">
       <>
         <Description>"Lugares que preciso ir!"</Description>
         <InputContainer>

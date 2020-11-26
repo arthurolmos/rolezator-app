@@ -61,9 +61,9 @@ export default function SideMenu({
                   Usar minhas sugestões!
                 </OptionStyled>
               )}
-              {commonQuestions.map((question) => {
+              {commonQuestions.map((question, index: number) => {
                 return (
-                  <Option onClick={() => handleOption(question)}>
+                  <Option key={index} onClick={() => handleOption(question)}>
                     {question.text}
                   </Option>
                 );

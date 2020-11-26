@@ -27,8 +27,8 @@ export default function Main() {
   });
   const [suggestion, setSuggestion] = React.useState<ISuggestion | null>(null);
 
-  const [latitude, setLatitude] = React.useState<number>(0);
-  const [longitude, setLongitude] = React.useState<number>(0);
+  // const [latitude, setLatitude] = React.useState<number>(0);
+  // const [longitude, setLongitude] = React.useState<number>(0);
 
   function getUserSuggestions() {
     if (userSuggestions.length === 0) {
@@ -97,16 +97,16 @@ export default function Main() {
       : getRandomSuggestion();
   }
 
-  React.useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.watchPosition(function (position) {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      });
-    } else {
-      console.log("Not Available");
-    }
-  });
+  // React.useEffect(() => {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.watchPosition(function (position) {
+  //       setLatitude(position.coords.latitude);
+  //       setLongitude(position.coords.longitude);
+  //     });
+  //   } else {
+  //     console.log("Not Available");
+  //   }
+  // });
 
   return (
     <Container>

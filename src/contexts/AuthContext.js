@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import firebase from "firebase";
 import dao from "../dao";
 
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [addListener, auth]);
 
   function addListener(uid, collection, setter) {
     return db
