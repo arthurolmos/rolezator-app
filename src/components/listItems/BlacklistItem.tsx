@@ -5,13 +5,13 @@ import { AuthContext } from "../../contexts/AuthContext";
 import IBlacklist from "../../interfaces/IBlacklist";
 
 export default function BlacklistItem({ item }: { item: IBlacklist }) {
-  const { removeFromBlacklist } = React.useContext(AuthContext);
+  const { removeFromUserBlacklist } = React.useContext(AuthContext);
 
   return (
     <Container>
       <Title>{item.description}</Title>
       <CloseButton>
-        <FaTimesStyled onClick={() => removeFromBlacklist(item.id)} />
+        <FaTimesStyled onClick={() => removeFromUserBlacklist(item.id)} />
       </CloseButton>
     </Container>
   );

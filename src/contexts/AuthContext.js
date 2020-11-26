@@ -14,6 +14,24 @@ export function AuthProvider({ children }) {
   const [userBlacklist, setUserBlacklist] = React.useState([]);
 
   React.useEffect(() => {
+    function addListener(uid, collection, setter) {
+      return db
+        .collection("users")
+        .doc(uid)
+        .collection(collection)
+        .onSnapshot((collection) => {
+          const docs = [];
+
+          collection.forEach((doc) => {
+            const data = doc.data();
+            data.id = doc.id;
+            docs.push(data);
+          });
+
+          setter(docs);
+        });
+    }
+
     const unsubscribe = auth.onAuthStateChanged(function (user) {
       let blacklistUnsubscribe;
       let suggestionsUnsubscribe;
@@ -38,25 +56,7 @@ export function AuthProvider({ children }) {
     });
 
     return () => unsubscribe();
-  }, [addListener, auth]);
-
-  function addListener(uid, collection, setter) {
-    return db
-      .collection("users")
-      .doc(uid)
-      .collection(collection)
-      .onSnapshot((collection) => {
-        const docs = [];
-
-        collection.forEach((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          docs.push(data);
-        });
-
-        setter(docs);
-      });
-  }
+  }, [auth, db]);
 
   async function addToUserSuggestions(item) {
     try {

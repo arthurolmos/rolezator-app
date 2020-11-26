@@ -5,7 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import ISuggestion from "../../interfaces/ISuggestion";
 
 export default function SuggestionItem({ item }: { item: ISuggestion }) {
-  const { removeFromSuggestions } = React.useContext(AuthContext);
+  const { removeFromUserSuggestionsuggestions } = React.useContext(AuthContext);
 
   const openGoogleMapsURL = () => {
     const placeId = item.placeId;
@@ -21,7 +21,9 @@ export default function SuggestionItem({ item }: { item: ISuggestion }) {
     <Container>
       <Title onClick={openGoogleMapsURL}>{item.description}</Title>
       <CloseButton>
-        <FaTimesStyled onClick={() => removeFromSuggestions(item.id)} />
+        <FaTimesStyled
+          onClick={() => removeFromUserSuggestionsuggestions(item.id)}
+        />
       </CloseButton>
     </Container>
   );
