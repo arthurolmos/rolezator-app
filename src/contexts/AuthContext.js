@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import firebase from "firebase";
 import dao from "../dao";
 
@@ -7,10 +7,11 @@ export const AuthContext = React.createContext();
 export function AuthProvider({ children }) {
   const db = firebase.firestore();
   const auth = firebase.auth();
+  auth.useDeviceLanguage();
 
   const [user, setUser] = React.useState(null);
-  const [suggestions, setSuggestions] = React.useState([]);
-  const [blacklist, setBlacklist] = React.useState([]);
+  const [userSuggestions, setUserSuggestions] = React.useState([]);
+  const [userBlacklist, setUserBlacklist] = React.useState([]);
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(function (user) {
@@ -22,11 +23,11 @@ export function AuthProvider({ children }) {
 
         const uid = user.uid;
 
-        blacklistUnsubscribe = addListener(uid, "blacklist", setBlacklist);
+        blacklistUnsubscribe = addListener(uid, "blacklist", setUserBlacklist);
         suggestionsUnsubscribe = addListener(
           uid,
           "suggestions",
-          setSuggestions
+          setUserSuggestions
         );
       } else {
         setUser(null);
@@ -57,7 +58,7 @@ export function AuthProvider({ children }) {
       });
   }
 
-  async function addSuggestion(item) {
+  async function addToUserSuggestions(item) {
     try {
       const ref = dao.getBaseRef();
 
@@ -68,7 +69,18 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function addToBlacklist(item) {
+  async function removeFromUserSuggestions(id) {
+    try {
+      const ref = dao.getBaseRef();
+
+      const suggestionsRef = ref.collection("suggestions").doc(id);
+      await dao.deleteDocument(suggestionsRef);
+    } catch (error) {
+      console.log("Error removing doc", error);
+    }
+  }
+
+  async function addToUserBlacklist(item) {
     try {
       const ref = dao.getBaseRef();
 
@@ -79,7 +91,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function removeFromBlacklist(id) {
+  async function removeFromUserBlacklist(id) {
     try {
       const ref = dao.getBaseRef();
 
@@ -92,7 +104,6 @@ export function AuthProvider({ children }) {
 
   async function signIn() {
     try {
-      auth.useDeviceLanguage();
       const googleProvider = new firebase.auth.GoogleAuthProvider();
 
       await auth.signInWithPopup(googleProvider);
@@ -112,12 +123,13 @@ export function AuthProvider({ children }) {
         signIn,
         signOut,
 
-        suggestions,
-        addSuggestion,
+        userSuggestions,
+        addToUserSuggestions,
+        removeFromUserSuggestions,
 
-        blacklist,
-        addToBlacklist,
-        removeFromBlacklist,
+        userBlacklist,
+        addToUserBlacklist,
+        removeFromUserBlacklist,
       }}
     >
       {children}
