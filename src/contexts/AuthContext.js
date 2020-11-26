@@ -33,8 +33,8 @@ export function AuthProvider({ children }) {
     }
 
     const unsubscribe = auth.onAuthStateChanged(function (user) {
-      let blacklistUnsubscribe;
-      let suggestionsUnsubscribe;
+      let blacklistUnsubscribe = null;
+      let suggestionsUnsubscribe = null;
 
       if (user) {
         setUser(user);
@@ -50,8 +50,8 @@ export function AuthProvider({ children }) {
       } else {
         setUser(null);
 
-        blacklistUnsubscribe();
-        suggestionsUnsubscribe();
+        blacklistUnsubscribe && blacklistUnsubscribe();
+        suggestionsUnsubscribe && suggestionsUnsubscribe();
       }
     });
 
