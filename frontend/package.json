@@ -44,5 +44,8 @@
     "@types/react": "^17.0.0",
     "@types/react-places-autocomplete": "^7.2.6",
     "@types/styled-components": "^5.1.4"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
